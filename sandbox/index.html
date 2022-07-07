@@ -3,19 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <title>Sandbox</title>
+    <style>
+      .scrollable {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ccc;
+        overflow-x: scroll;
+        float: left;
+      }
+
+      .simple {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ccc;
+        float: left;
+      }
+    </style>
     <script src="http://localhost:8080/datadog-rum.js"></script>
-    <script src="http://localhost:8080/datadog-logs.js"></script>
+    <script></script>
+  </head>
+  <body>
+    <div>
+      <button onclick="DD_RUM.startSessionReplayRecording()">start recording</button>
+    </div>
     <script>
+      function addContainer(scrollable) {
+        const element = document.createElement('div')
+        element.classList.add(scrollable ? 'scrollable' : 'simple')
+
+        document.body.append(element)
+      }
+      for (let i = 0; i < 1000; i++) {
+        addContainer(i % 2 === 0)
+      }
       DD_RUM.init({
         clientToken: 'xxx',
         applicationId: 'xxx',
         telemetrySampleRate: 100,
       })
-      DD_LOGS.init({
-        clientToken: 'xxx',
-        telemetrySampleRate: 100,
-      })
     </script>
-  </head>
-  <body></body>
+  </body>
 </html>

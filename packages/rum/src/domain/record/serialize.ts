@@ -395,12 +395,21 @@ function getAttributesForPrivacyLevel(
   /**
    * Serialize the scroll state for each element
    */
-  if (element.scrollLeft) {
-    safeAttrs.rr_scrollLeft = Math.round(element.scrollLeft)
-  }
-  if (element.scrollTop) {
-    safeAttrs.rr_scrollTop = Math.round(element.scrollTop)
-  }
+  safeAttrs.rr_scrollLeft =
+    Math.round(getScroll(element, 'x')) + Number(couldScroll(element, 'x')) + Number(canScroll(element, 'x'))
+  safeAttrs.rr_scrollTop =
+    Math.round(getScroll(element, 'y')) + Number(couldScroll(element, 'y')) + Number(canScroll(element, 'y'))
+}
 
-  return safeAttrs
+function canScroll(element: Element, axis: 'x' | 'y') {
+  return element[`scroll${axis === 'x' ? 'Width' : 'Height'}`] > element[`client${axis === 'x' ? 'Width' : 'Height'}`]
+}
+
+function couldScroll(element: Element, axis: 'x' | 'y') {
+  const overflow = getComputedStyle(element).getPropertyValue(`overflow-${axis}`)
+  return overflow === 'scroll' || overflow === 'auto'
+}
+
+function getScroll(element: Element, axis: 'x' | 'y') {
+  return element[`scroll${axis === 'x' ? 'Left' : 'Top'}`]
 }
