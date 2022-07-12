@@ -86,7 +86,7 @@ const resetColor = '\x1b[0m'
 
 function printError(...params) {
   const redColor = '\x1b[31;1m'
-  console.log(redColor, ...params, resetColor)
+  console.error(redColor, ...params, resetColor)
 }
 
 function printLog(...params) {
